@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 using SmartParking.Data;
 using SmartParking.Data;
 using SmartParking.Data.Seed;
@@ -74,10 +75,36 @@ builder.Services.AddScoped<ISlotService, SlotService>();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IElectronicTicketService, ElectronicTicketService>();
+builder.Services.AddScoped<ICheckInService, CheckInService>();
+builder.Services.AddScoped<ICheckOutService, CheckOutService>();
 builder.Services.AddHostedService<BookingExpirationService>();
 builder.Services.AddScoped<IBranchAuthorizationService, BranchAuthorizationService>();
 builder.Services.AddScoped<IVehicleAuthorizationService, VehicleAuthorizationService>();
 builder.Services.AddSignalR();
+
+// ================= REDIS =================
+var redisConfig = builder.Configuration.GetSection("Redis");
+var redisHost = redisConfig["Host"] ?? "localhost";
+var redisPort = int.Parse(redisConfig["Port"] ?? "6379");
+var redisDb = int.Parse(redisConfig["Database"] ?? "0");
+var redisConnectionTimeout = int.Parse(redisConfig["ConnectionTimeout"] ?? "5000");
+
+// Connection string with abortConnect=false to allow retry during migrations
+var redisConnectionString = $"{redisHost}:{redisPort},defaultDatabase={redisDb},connectTimeout={redisConnectionTimeout},abortConnect=false";
+
+try
+{
+    var redis = ConnectionMultiplexer.Connect(redisConnectionString);
+    builder.Services.AddSingleton<IConnectionMultiplexer>(redis);
+    builder.Services.AddScoped<IRedisService, RedisService>();
+}
+catch (Exception ex)
+{
+    // Log warning but continue - allows migrations to work even if Redis is down
+    System.Diagnostics.Debug.WriteLine($"⚠️ Warning: Redis connection failed during startup: {ex.Message}");
+    // Redis will be retried on first use if connection string has abortConnect=false
+}
+
 // ================= CONTROLLERS =================
 builder.Services.AddControllers()
 .AddJsonOptions(options =>

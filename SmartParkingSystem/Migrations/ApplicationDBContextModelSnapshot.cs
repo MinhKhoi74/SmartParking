@@ -216,6 +216,96 @@ namespace SmartParking.Migrations
                     b.ToTable("Branches");
                 });
 
+            modelBuilder.Entity("SmartParking.Models.CheckInOut", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CheckInImageBase64")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CheckInStationId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("CheckInTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CheckOutImageBase64")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CheckOutStationId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("CheckOutTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<float>("Confidence")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DurationMinutes")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("FeeAmount")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<DateTime?>("FeeCalculatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FeeStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("Pending");
+
+                    b.Property<string>("LicensePlate")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PlateImagePath")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("Active");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CheckInTime")
+                        .HasDatabaseName("IX_CheckInTime");
+
+                    b.HasIndex("FeeStatus")
+                        .HasDatabaseName("IX_FeeStatus");
+
+                    b.HasIndex("LicensePlate", "Status")
+                        .HasDatabaseName("IX_LicensePlate_Active")
+                        .HasFilter("[Status] = 'Active'");
+
+                    b.ToTable("CheckInOuts");
+                });
+
             modelBuilder.Entity("SmartParking.Models.ElectronicTicket", b =>
                 {
                     b.Property<Guid>("Id")
@@ -257,6 +347,9 @@ namespace SmartParking.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<Guid?>("BranchId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -309,6 +402,8 @@ namespace SmartParking.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -560,6 +655,16 @@ namespace SmartParking.Migrations
                     b.Navigation("Booking");
                 });
 
+            modelBuilder.Entity("SmartParking.Models.Identity.ApplicationUser", b =>
+                {
+                    b.HasOne("SmartParking.Models.Branch", "WorkingBranch")
+                        .WithMany("Staff")
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("WorkingBranch");
+                });
+
             modelBuilder.Entity("SmartParking.Models.Identity.RefreshToken", b =>
                 {
                     b.HasOne("SmartParking.Models.Identity.ApplicationUser", "User")
@@ -615,9 +720,16 @@ namespace SmartParking.Migrations
                     b.Navigation("ParkingLot");
                 });
 
+            modelBuilder.Entity("SmartParking.Models.Booking", b =>
+                {
+                    b.Navigation("ElectronicTicket");
+                });
+
             modelBuilder.Entity("SmartParking.Models.Branch", b =>
                 {
                     b.Navigation("ParkingLots");
+
+                    b.Navigation("Staff");
                 });
 
             modelBuilder.Entity("SmartParking.Models.Identity.ApplicationUser", b =>

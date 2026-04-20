@@ -13,6 +13,7 @@ namespace SmartParking.Models
 
         public ApplicationUser? Manager { get; set; }
 
+        public ICollection<ApplicationUser> Staff { get; set; }
         public ICollection<ParkingLot> ParkingLots { get; set; }
     }
 }

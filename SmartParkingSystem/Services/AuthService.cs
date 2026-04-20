@@ -112,43 +112,5 @@ namespace SmartParking.Services
             if (!result.Succeeded)
                 throw new Exception("Reset password failed");
         }
-        public async Task AssignManagerAsync(AssignManagerDto dto)
-        {
-            var branch = await _context.Branches.FindAsync(dto.BranchId);
-
-            if (branch == null)
-                throw new Exception("Branch not found");
-
-            var manager = await _userManager.FindByIdAsync(dto.ManagerId);
-
-            if (manager == null)
-                throw new Exception("Manager not found");
-
-            if (!await _userManager.IsInRoleAsync(manager, "Manager"))
-                throw new Exception("User does not have Manager role");
-
-            branch.ManagerId = dto.ManagerId;
-
-            await _context.SaveChangesAsync();
-        }
-        public async Task AssignRoleAsync(AssignRoleDto dto)
-        {
-            var user = await _userManager.FindByIdAsync(dto.UserId);
-            if (user == null)
-                throw new Exception("User không tồn tại");
-            var roleExists = await _roleManager.RoleExistsAsync(dto.RoleName);
-            if (!roleExists)
-                throw new Exception($"Role '{dto.RoleName}' không tồn tại trong hệ thống");
-            var currentRoles = await _userManager.GetRolesAsync(user);
-            var removeResult = await _userManager.RemoveFromRolesAsync(user, currentRoles);
-            if (!removeResult.Succeeded)
-                throw new Exception("Lỗi khi xóa các Role cũ");
-            var addResult = await _userManager.AddToRoleAsync(user, dto.RoleName);
-            if (!addResult.Succeeded)
-            {
-                var errors = string.Join(", ", addResult.Errors.Select(e => e.Description));
-                throw new Exception($"Lỗi khi gán Role mới: {errors}");
-            }
-        }
     }
 }

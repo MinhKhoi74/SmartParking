@@ -24,6 +24,7 @@ namespace SmartParking.Data
         public DbSet<Vehicle> Vehicle { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<ElectronicTicket> ElectronicTickets { get; set; }
+        public DbSet<CheckInOut> CheckInOuts { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

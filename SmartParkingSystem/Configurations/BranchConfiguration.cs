@@ -21,6 +21,12 @@ namespace SmartParking.Configurations
                 .WithMany(x => x.ManagedBranches)
                 .HasForeignKey(x => x.ManagerId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany(x => x.Staff)
+                .WithOne(x => x.WorkingBranch)
+                .HasForeignKey(x => x.BranchId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
+

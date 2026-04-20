@@ -9,6 +9,24 @@ namespace SmartParking.Services.Interfaces
         Task<object> GetProfileAsync(string userId);
 
         Task UpdateProfileAsync(string userId, UpdateProfileDto dto);
+
+        Task<List<UserListDto>> GetAllUsersAsync();
+
+        Task<UserDetailDto> GetUserDetailAsync(string userId, string currentUserId);
+
+        Task<string> CreateCustomerAsync(CreateCustomerDto dto);
+
+        Task<string> CreateManagerAsync(CreateManagerDto dto);
+
+        Task<string> CreateStaffAsync(CreateStaffDto dto);
+
+        Task DeleteUserAsync(string userId);
+
+        Task<List<UserListDto>> GetStaffInBranchAsync(string managerId);
+
+        Task<string> CreateStaffByManagerAsync(string managerId, CreateStaffDto dto);
+
+        Task DeleteStaffAsync(string managerId, string staffId);
     }
 }
 

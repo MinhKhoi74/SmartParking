@@ -13,8 +13,5 @@ namespace SmartParking.Services.Interfaces
         Task ForgotPasswordAsync(ForgotPasswordDto dto);
 
         Task ResetPasswordAsync(ResetPasswordDto dto);
-        Task AssignManagerAsync(AssignManagerDto dto);
-        Task AssignRoleAsync(AssignRoleDto dto);
-
     }
 }
