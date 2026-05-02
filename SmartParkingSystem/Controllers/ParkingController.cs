@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using SmartParking.DTOs;
 using SmartParking.Services.Interfaces;
@@ -10,15 +11,18 @@ namespace SmartParking.Controllers
     {
         private readonly ICheckInService _checkInService;
         private readonly ICheckOutService _checkOutService;
+        private readonly IParkingHistoryService _parkingHistoryService;
         private readonly ILogger<ParkingController> _logger;
 
         public ParkingController(
             ICheckInService checkInService,
             ICheckOutService checkOutService,
+            IParkingHistoryService parkingHistoryService,
             ILogger<ParkingController> logger)
         {
             _checkInService = checkInService;
             _checkOutService = checkOutService;
+            _parkingHistoryService = parkingHistoryService;
             _logger = logger;
         }
 
@@ -76,6 +80,27 @@ namespace SmartParking.Controllers
                 result.ErrorCode,
                 result.Message);
 
+            var shouldReturnOk =
+                result.Success ||
+                result.RequiresPaymentAction ||
+                string.Equals(result.PaymentStatus, "Pending", StringComparison.OrdinalIgnoreCase);
+
+            return shouldReturnOk ? Ok(result) : BadRequest(result);
+        }
+
+        [HttpPost("check-out/{checkOutId:int}/confirm-payment")]
+        [Produces("application/json")]
+        [ProducesResponseType(typeof(CheckOutResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CheckOutResult), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> ConfirmCheckOutPayment(int checkOutId, [FromBody] ConfirmCheckOutPaymentRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                LogValidationErrors("ConfirmCheckOutPayment");
+                return ValidationProblem(ModelState);
+            }
+
+            var result = await _checkOutService.ConfirmPendingPaymentAsync(checkOutId, request);
             return result.Success ? Ok(result) : BadRequest(result);
         }
 
@@ -85,12 +110,23 @@ namespace SmartParking.Controllers
         {
             if (string.IsNullOrEmpty(plate))
             {
-                return BadRequest(new { message = "Biển số xe không được để trống" });
+                return BadRequest(new { message = "Bien so xe khong duoc de trong" });
             }
 
-            plate = plate.ToUpper().Trim();
+            return Ok(await _parkingHistoryService.GetHistoryByPlateAsync(plate));
+        }
 
-            return Ok(new { message = "Feature coming soon" });
+        [HttpGet("history/me")]
+        [Produces("application/json")]
+        public async Task<IActionResult> GetMyHistory()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                return Unauthorized();
+            }
+
+            return Ok(await _parkingHistoryService.GetMyHistoryAsync(userId));
         }
 
         private void LogValidationErrors(string actionName)

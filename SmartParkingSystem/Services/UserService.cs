@@ -39,12 +39,14 @@ namespace SmartParking.Services
         public async Task<object> GetProfileAsync(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
+            var wallet = await _context.Wallets.FirstOrDefaultAsync(x => x.UserId == userId);
 
             return new
             {
                 user.FullName,
                 user.Email,
-                user.PhoneNumber
+                user.PhoneNumber,
+                WalletBalance = wallet?.Balance ?? 0m
             };
         }
 
@@ -142,6 +144,15 @@ namespace SmartParking.Services
                 throw new Exception(string.Join(", ", result.Errors.Select(e => e.Description)));
 
             await _userManager.AddToRoleAsync(user, "Customer");
+            _context.Wallets.Add(new Models.Wallet
+            {
+                Id = Guid.NewGuid(),
+                UserId = user.Id,
+                Balance = 0m,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
+            });
+            await _context.SaveChangesAsync();
             return user.Id;
         }
 
@@ -224,16 +235,6 @@ namespace SmartParking.Services
             foreach (var branch in managerBranches)
             {
                 branch.ManagerId = null;
-            }
-
-            // Xóa tất cả Bookings của user (phải xóa trước Vehicles vì FK constraint)
-            var bookings = await _context.Bookings
-                .Where(b => b.UserId == userId)
-                .ToListAsync();
-            
-            if (bookings.Any())
-            {
-                _context.Bookings.RemoveRange(bookings);
             }
 
             // Xóa tất cả Vehicles của user (CheckInOut sẽ bị xóa cascade nếu có FK)

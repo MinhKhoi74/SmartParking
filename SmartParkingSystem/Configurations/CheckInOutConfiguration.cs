@@ -27,6 +27,13 @@ namespace SmartParking.Configurations
                 .HasMaxLength(20)
                 .HasDefaultValue("Pending");
 
+            builder.Property(c => c.PaymentStatus)
+                .HasMaxLength(20)
+                .HasDefaultValue("Pending");
+
+            builder.Property(c => c.PaymentMethod)
+                .HasMaxLength(20);
+
             builder.Property(c => c.Status)
                 .HasMaxLength(20)
                 .HasDefaultValue("Active");
@@ -44,6 +51,24 @@ namespace SmartParking.Configurations
 
             builder.HasIndex(c => c.FeeStatus)
                 .HasName("IX_FeeStatus");
+
+            builder.HasIndex(c => c.PaymentStatus)
+                .HasDatabaseName("IX_CheckInOut_PaymentStatus");
+
+            builder.HasOne(c => c.Vehicle)
+                .WithMany()
+                .HasForeignKey(c => c.VehicleId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            builder.HasOne(c => c.User)
+                .WithMany()
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            builder.HasOne(c => c.WalletTransaction)
+                .WithMany(t => t.ParkingSessions)
+                .HasForeignKey(c => c.WalletTransactionId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

@@ -15,13 +15,15 @@ namespace SmartParking.Services
         private readonly IConfiguration _config;
         private readonly ApplicationDBContext _context;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IWalletService _walletService;
 
-        public AuthService(UserManager<ApplicationUser> userManager, IConfiguration config, ApplicationDBContext context, RoleManager<IdentityRole> roleManager)
+        public AuthService(UserManager<ApplicationUser> userManager, IConfiguration config, ApplicationDBContext context, RoleManager<IdentityRole> roleManager, IWalletService walletService)
         {
             _userManager = userManager;
             _config = config;
             _context = context;
             _roleManager = roleManager;
+            _walletService = walletService;
         }
 
         public async Task ForgotPasswordAsync(ForgotPasswordDto dto)
@@ -97,6 +99,7 @@ namespace SmartParking.Services
             if (!result.Succeeded)
                 throw new Exception(string.Join(", ", result.Errors.Select(e => e.Description)));
             await _userManager.AddToRoleAsync(user, "Customer");
+            await _walletService.EnsureWalletAsync(user.Id);
             return new { message = "Register Success" };
         }
 

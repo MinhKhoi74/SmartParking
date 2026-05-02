@@ -9,6 +9,7 @@ namespace SmartParking.Models.Identity
         public Guid? BranchId { get; set; }
 
         public ICollection<Vehicle> Vehicles { get; set; }
+        public Wallet? Wallet { get; set; }
         public ICollection<Branch> ManagedBranches { get; set; }
         public Branch? WorkingBranch { get; set; }
         public ICollection<RefreshToken> RefreshTokens { get; set; }

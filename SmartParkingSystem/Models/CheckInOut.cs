@@ -5,6 +5,8 @@ namespace SmartParking.Models
     public class CheckInOut
     {
         public int Id { get; set; }
+        public Guid? VehicleId { get; set; }
+        public string? UserId { get; set; }
 
         // Plate info
         public string LicensePlate { get; set; }
@@ -23,13 +25,21 @@ namespace SmartParking.Models
 
         // Fee calculation
         public int? DurationMinutes { get; set; }
-        public decimal? FeeAmount { get; set; }
+        public decimal FeeAmount { get; set; }
         public DateTime? FeeCalculatedAt { get; set; }
         public string FeeStatus { get; set; } = "Pending"; // 'Pending', 'Calculated', 'Paid'
+        public string PaymentStatus { get; set; } = "Pending"; // 'Pending', 'Paid', 'Failed'
+        public string? PaymentMethod { get; set; } // 'Wallet', 'Momo'
+        public Guid? WalletTransactionId { get; set; }
+        public DateTime? PaidAt { get; set; }
 
         // Metadata
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime UpdatedAt { get; set; } = DateTime.Now;
         public string Status { get; set; } = "Active"; // 'Active', 'Completed', 'Cancelled'
+
+        public Vehicle? Vehicle { get; set; }
+        public Identity.ApplicationUser? User { get; set; }
+        public WalletTransaction? WalletTransaction { get; set; }
     }
 }

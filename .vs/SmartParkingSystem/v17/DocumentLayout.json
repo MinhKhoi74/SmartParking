@@ -3,27 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\Admin\\Desktop\\SmartParkingSystem\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{595139BB-A0A3-4E99-8141-4B711436BC1D}|SmartParkingSystem\\SmartParking.csproj|c:\\users\\admin\\desktop\\smartparkingsystem\\smartparkingsystem\\migrations\\20260418060042_addcheckinouttable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{595139BB-A0A3-4E99-8141-4B711436BC1D}|SmartParkingSystem\\SmartParking.csproj|solutionrelative:smartparkingsystem\\migrations\\20260418060042_addcheckinouttable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{595139BB-A0A3-4E99-8141-4B711436BC1D}|SmartParkingSystem\\SmartParking.csproj|c:\\users\\admin\\desktop\\smartparkingsystem\\smartparkingsystem\\controllers\\parkingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{595139BB-A0A3-4E99-8141-4B711436BC1D}|SmartParkingSystem\\SmartParking.csproj|solutionrelative:smartparkingsystem\\controllers\\parkingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{595139BB-A0A3-4E99-8141-4B711436BC1D}|SmartParkingSystem\\SmartParking.csproj|c:\\users\\admin\\desktop\\smartparkingsystem\\smartparkingsystem\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{595139BB-A0A3-4E99-8141-4B711436BC1D}|SmartParkingSystem\\SmartParking.csproj|solutionrelative:smartparkingsystem\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{595139BB-A0A3-4E99-8141-4B711436BC1D}|SmartParkingSystem\\SmartParking.csproj|c:\\users\\admin\\desktop\\smartparkingsystem\\smartparkingsystem\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{595139BB-A0A3-4E99-8141-4B711436BC1D}|SmartParkingSystem\\SmartParking.csproj|solutionrelative:smartparkingsystem\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{595139BB-A0A3-4E99-8141-4B711436BC1D}|SmartParkingSystem\\SmartParking.csproj|c:\\users\\admin\\desktop\\smartparkingsystem\\smartparkingsystem\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{595139BB-A0A3-4E99-8141-4B711436BC1D}|SmartParkingSystem\\SmartParking.csproj|solutionrelative:smartparkingsystem\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{595139BB-A0A3-4E99-8141-4B711436BC1D}|SmartParkingSystem\\SmartParking.csproj|c:\\users\\admin\\desktop\\smartparkingsystem\\smartparkingsystem\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{595139BB-A0A3-4E99-8141-4B711436BC1D}|SmartParkingSystem\\SmartParking.csproj|solutionrelative:smartparkingsystem\\controllers\\userscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{595139BB-A0A3-4E99-8141-4B711436BC1D}|SmartParkingSystem\\SmartParking.csproj|c:\\users\\admin\\desktop\\smartparkingsystem\\smartparkingsystem\\migrations\\20260423155628_addwalletandpaymentmetadata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{595139BB-A0A3-4E99-8141-4B711436BC1D}|SmartParkingSystem\\SmartParking.csproj|solutionrelative:smartparkingsystem\\migrations\\20260423155628_addwalletandpaymentmetadata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -33,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 144,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -45,77 +30,28 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Microsoft.Common.CurrentVersion.targets",
-              "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
-              "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
-              "RelativeToolTip": "..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\amd64\\Microsoft.Common.CurrentVersion.targets",
-              "ViewState": "AgIAAAQVAAAAAAAAAAAgwBEVAAAEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
-              "WhenOpened": "2026-04-18T07:51:40.26Z",
+              "DocumentIndex": 0,
+              "Title": "ParkingController.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\SmartParkingSystem\\SmartParkingSystem\\Controllers\\ParkingController.cs",
+              "RelativeDocumentMoniker": "SmartParkingSystem\\Controllers\\ParkingController.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\SmartParkingSystem\\SmartParkingSystem\\Controllers\\ParkingController.cs",
+              "RelativeToolTip": "SmartParkingSystem\\Controllers\\ParkingController.cs",
+              "ViewState": "AgIAAE8AAAAAAAAAAAAkwFIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-23T17:36:59.567Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "20260418060042_AddCheckinOutTable.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\SmartParkingSystem\\SmartParkingSystem\\Migrations\\20260418060042_AddCheckinOutTable.cs",
-              "RelativeDocumentMoniker": "SmartParkingSystem\\Migrations\\20260418060042_AddCheckinOutTable.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\SmartParkingSystem\\SmartParkingSystem\\Migrations\\20260418060042_AddCheckinOutTable.cs",
-              "RelativeToolTip": "SmartParkingSystem\\Migrations\\20260418060042_AddCheckinOutTable.cs",
+              "DocumentIndex": 1,
+              "Title": "20260423155628_AddWalletAndPaymentMetadata.cs",
+              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\SmartParkingSystem\\SmartParkingSystem\\Migrations\\20260423155628_AddWalletAndPaymentMetadata.cs",
+              "RelativeDocumentMoniker": "SmartParkingSystem\\Migrations\\20260423155628_AddWalletAndPaymentMetadata.cs",
+              "ToolTip": "C:\\Users\\Admin\\Desktop\\SmartParkingSystem\\SmartParkingSystem\\Migrations\\20260423155628_AddWalletAndPaymentMetadata.cs",
+              "RelativeToolTip": "SmartParkingSystem\\Migrations\\20260423155628_AddWalletAndPaymentMetadata.cs",
               "ViewState": "AgIAABkAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-18T06:00:45.815Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\SmartParkingSystem\\SmartParkingSystem\\appsettings.json",
-              "RelativeDocumentMoniker": "SmartParkingSystem\\appsettings.json",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\SmartParkingSystem\\SmartParkingSystem\\appsettings.json",
-              "RelativeToolTip": "SmartParkingSystem\\appsettings.json",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABUAAAAhAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-04-18T05:41:35.475Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "AuthService.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\SmartParkingSystem\\SmartParkingSystem\\Services\\AuthService.cs",
-              "RelativeDocumentMoniker": "SmartParkingSystem\\Services\\AuthService.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\SmartParkingSystem\\SmartParkingSystem\\Services\\AuthService.cs",
-              "RelativeToolTip": "SmartParkingSystem\\Services\\AuthService.cs",
-              "ViewState": "AgIAAE4AAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-08T07:49:19.721Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "AuthController.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\SmartParkingSystem\\SmartParkingSystem\\Controllers\\AuthController.cs",
-              "RelativeDocumentMoniker": "SmartParkingSystem\\Controllers\\AuthController.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\SmartParkingSystem\\SmartParkingSystem\\Controllers\\AuthController.cs",
-              "RelativeToolTip": "SmartParkingSystem\\Controllers\\AuthController.cs",
-              "ViewState": "AgIAABgAAAAAAAAAAAAwwC0AAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-08T07:49:06.065Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "UsersController.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\Desktop\\SmartParkingSystem\\SmartParkingSystem\\Controllers\\UsersController.cs",
-              "RelativeDocumentMoniker": "SmartParkingSystem\\Controllers\\UsersController.cs",
-              "ToolTip": "C:\\Users\\Admin\\Desktop\\SmartParkingSystem\\SmartParkingSystem\\Controllers\\UsersController.cs",
-              "RelativeToolTip": "SmartParkingSystem\\Controllers\\UsersController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-08T07:48:56.93Z"
+              "WhenOpened": "2026-04-23T15:56:29.448Z"
             }
           ]
         },

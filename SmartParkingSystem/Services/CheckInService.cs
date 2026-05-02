@@ -1,5 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using SmartParking.Data;
 using SmartParking.DTOs;
+using SmartParking.DTOs.ElectronicTicket;
 using SmartParking.Models;
 using SmartParking.Services.Interfaces;
 
@@ -9,15 +11,18 @@ namespace SmartParking.Services
     {
         private readonly ApplicationDBContext _context;
         private readonly IRedisService _redis;
+        private readonly IElectronicTicketService _electronTicketService;
         private readonly ILogger<CheckInService> _logger;
 
         public CheckInService(
             ApplicationDBContext context,
             IRedisService redis,
+            IElectronicTicketService electronTicketService,
             ILogger<CheckInService> logger)
         {
             _context = context;
             _redis = redis;
+            _electronTicketService = electronTicketService;
             _logger = logger;
         }
 
@@ -38,10 +43,9 @@ namespace SmartParking.Services
 
             try
             {
-                // 1. Kiểm tra Redis - duplicate check
                 if (await _redis.IsPlateActiveAsync(plate))
                 {
-                    _logger.LogWarning($"❌ Duplicate checkin attempt: {plate}");
+                    _logger.LogWarning("Duplicate checkin attempt: {Plate}", plate);
                     return new CheckInResult
                     {
                         Success = false,
@@ -50,12 +54,16 @@ namespace SmartParking.Services
                     };
                 }
 
-                // 2. Thêm vào Redis
                 await _redis.AddCheckinAsync(plate, now);
 
-                // 3. Lưu vào Database
+                var vehicle = await _context.Vehicle
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.LicensePlate == plate && x.IsActive);
+
                 var checkinRecord = new CheckInOut
                 {
+                    VehicleId = vehicle?.Id,
+                    UserId = vehicle?.UserId,
                     LicensePlate = plate,
                     PlateImagePath = string.Empty,
                     CheckInTime = now,
@@ -66,6 +74,7 @@ namespace SmartParking.Services
                     Confidence = request.Confidence,
                     Status = "Active",
                     FeeStatus = "Pending",
+                    PaymentStatus = "Pending",
                     CreatedAt = now,
                     UpdatedAt = now
                 };
@@ -73,33 +82,57 @@ namespace SmartParking.Services
                 _context.CheckInOuts.Add(checkinRecord);
                 await _context.SaveChangesAsync();
 
-                _logger.LogInformation($"✓ Checkin - {plate} - {now:dd/M/yyyy - HH:mm}");
+                // ======== TẠO VÉ ĐIỆN TỬ ========
+                // Tạo vé điện tử ảo cho mọi biển số
+                try
+                {
+                    // Lấy parking lot đầu tiên (mặc định) vì CheckInRequest không có ParkingLotId
+                    var parkingLot = await _context.ParkingLots
+                        .Include(p => p.Branch)
+                        .FirstOrDefaultAsync();
+
+                    var parkingLotName = parkingLot?.Name ?? "Chưa xác định";
+                    var branchName = parkingLot?.Branch?.Name ?? "Chưa xác định";
+
+                    var ticketDto = await _electronTicketService.CreateTicketAsync(new CreateElectronicTicketDto
+                    {
+                        LicensePlate = plate,
+                        ParkingLotName = parkingLotName,
+                        BranchName = branchName,
+                        CheckInDateTime = now
+                    });
+
+                    _logger.LogInformation("Electronic ticket created for {Plate}: {TicketCode}", plate, ticketDto.TicketCode);
+                }
+                catch (Exception ticketEx)
+                {
+                    _logger.LogError(ticketEx, "Error creating electronic ticket for {Plate}", plate);
+                    // Không throw - tiếp tục với check-in ngay cả nếu tạo vé thất bại
+                }
+
+                _logger.LogInformation("Checkin - {Plate} - {Time:dd/M/yyyy - HH:mm}", plate, now);
 
                 return new CheckInResult
                 {
                     Success = true,
-                    Message = $"✓ Checkin thành công cho {plate}",
+                    Message = $"Checkin thành công cho {plate}",
                     CheckInId = checkinRecord.Id,
                     CheckInTime = now
                 };
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "❌ Checkin failed for {Plate}: {Message}", plate, ex.Message);
-                if (ex.InnerException != null)
-                {
-                    _logger.LogError(ex.InnerException, "❌ Checkin inner exception for {Plate}: {Message}", plate, ex.InnerException.Message);
-                }
-                // Rollback Redis nếu DB fail
+                _logger.LogError(ex, "Checkin failed for {Plate}: {Message}", plate, ex.Message);
+
                 try
                 {
                     await _redis.RemoveCheckinAsync(plate);
                 }
                 catch (Exception redisEx)
                 {
-                    _logger.LogError($"Failed to rollback Redis: {redisEx.Message}");
+                    _logger.LogError(redisEx, "Failed to rollback Redis for {Plate}", plate);
                 }
-                
+
                 return new CheckInResult
                 {
                     Success = false,

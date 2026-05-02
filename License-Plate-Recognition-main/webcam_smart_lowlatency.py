@@ -318,7 +318,7 @@ def main():
                    help='Phone camera port')
     
     # === Display & Processing ===
-    ap.add_argument('-s', '--scale', type=float, default=0.5,
+    ap.add_argument('-s', '--scale', type=float, default=0.7,
                    help='Display scale (0-1)')
     ap.add_argument('-r', '--resize', type=float, default=config.CAMERA_RESIZE_SCALE,
                     help='Processing scale (0.2-0.4)')

@@ -5,14 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using StackExchange.Redis;
 using SmartParking.Data;
-using SmartParking.Data;
-using SmartParking.Data.Seed;
 using SmartParking.Data.Seed;
 using SmartParking.Models;
 using SmartParking.Models.Identity;
 using SmartParking.Services;
-using SmartParking.Services;
-using SmartParking.Services.Interfaces;
 using SmartParking.Services.Interfaces;
 using SmartParking.SignalR;
 
@@ -73,11 +69,14 @@ builder.Services.AddScoped<IParkingLotService, ParkingLotService>();
 builder.Services.AddScoped<IZoneService, ZoneService>();
 builder.Services.AddScoped<ISlotService, SlotService>();
 builder.Services.AddScoped<IVehicleService, VehicleService>();
-builder.Services.AddScoped<IBookingService, BookingService>();
-builder.Services.AddScoped<IElectronicTicketService, ElectronicTicketService>();
 builder.Services.AddScoped<ICheckInService, CheckInService>();
 builder.Services.AddScoped<ICheckOutService, CheckOutService>();
-builder.Services.AddHostedService<BookingExpirationService>();
+builder.Services.AddScoped<IWalletService, WalletService>();
+builder.Services.AddScoped<IParkingHistoryService, ParkingHistoryService>();
+builder.Services.AddScoped<IElectronicTicketService, ElectronicTicketService>();
+builder.Services.AddScoped<IElectronicTicketNotificationService, ElectronicTicketNotificationService>();
+builder.Services.AddHttpClient<IMomoService, MomoService>();
+builder.Services.AddHostedService<TicketLicensePlateMatcher>();
 builder.Services.AddScoped<IBranchAuthorizationService, BranchAuthorizationService>();
 builder.Services.AddScoped<IVehicleAuthorizationService, VehicleAuthorizationService>();
 builder.Services.AddSignalR();
@@ -167,9 +166,16 @@ using (var scope = app.Services.CreateScope())
     {
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
         var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+        var walletService = services.GetRequiredService<IWalletService>();
 
         await RoleSeeder.SeedRoles(roleManager);
         await UserSeeder.SeedAdminUser(userManager);
+
+        var customers = await userManager.GetUsersInRoleAsync("Customer");
+        foreach (var customer in customers)
+        {
+            await walletService.EnsureWalletAsync(customer.Id);
+        }
     }
     catch (Exception ex)
     {
@@ -186,6 +192,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.UseCors("SignalRPolicy");
 
 app.UseAuthentication();
@@ -193,6 +202,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapHub<ParkingHub>("/parkingHub");
+app.MapHub<NotificationHub>("/notificationHub");
 app.MapControllers();
 
 app.Run();

@@ -1,19 +1,20 @@
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using SmartParking.DTOs.Momo;
+
 namespace SmartParking.DTOs
 {
-    using System.Text.Json.Serialization;
-    using System.ComponentModel.DataAnnotations;
-
     public class CheckInRequest
     {
-        [Required(ErrorMessage = "Biển số xe không được để trống")]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "Biển số phải từ 3-50 ký tự")]
+        [Required(ErrorMessage = "Bien so xe khong duoc de trong")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Bien so phai tu 3-50 ky tu")]
         [JsonPropertyName("plateNumber")]
-        public string PlateNumber { get; set; }
+        public string PlateNumber { get; set; } = string.Empty;
 
         [JsonPropertyName("stationId")]
         public string? StationId { get; set; }
 
-        [Range(0, 1, ErrorMessage = "Confidence phải từ 0 đến 1")]
+        [Range(0, 1, ErrorMessage = "Confidence phai tu 0 den 1")]
         [JsonPropertyName("confidence")]
         public float Confidence { get; set; } = 0.9f;
 
@@ -27,7 +28,7 @@ namespace SmartParking.DTOs
         public bool Success { get; set; }
 
         [JsonPropertyName("message")]
-        public string Message { get; set; }
+        public string Message { get; set; } = string.Empty;
 
         [JsonPropertyName("errorCode")]
         public string? ErrorCode { get; set; }
@@ -41,10 +42,10 @@ namespace SmartParking.DTOs
 
     public class CheckOutRequest
     {
-        [Required(ErrorMessage = "Biển số xe không được để trống")]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "Biển số phải từ 3-50 ký tự")]
+        [Required(ErrorMessage = "Bien so xe khong duoc de trong")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Bien so phai tu 3-50 ky tu")]
         [JsonPropertyName("plateNumber")]
-        public string PlateNumber { get; set; }
+        public string PlateNumber { get; set; } = string.Empty;
 
         [JsonPropertyName("stationId")]
         public string? StationId { get; set; }
@@ -59,7 +60,7 @@ namespace SmartParking.DTOs
         public bool Success { get; set; }
 
         [JsonPropertyName("message")]
-        public string Message { get; set; }
+        public string Message { get; set; } = string.Empty;
 
         [JsonPropertyName("errorCode")]
         public string? ErrorCode { get; set; }
@@ -75,5 +76,42 @@ namespace SmartParking.DTOs
 
         [JsonPropertyName("feeAmount")]
         public decimal? FeeAmount { get; set; }
+
+        [JsonPropertyName("paymentStatus")]
+        public string? PaymentStatus { get; set; }
+
+        [JsonPropertyName("paymentMethod")]
+        public string? PaymentMethod { get; set; }
+
+        [JsonPropertyName("walletBalanceAfter")]
+        public decimal? WalletBalanceAfter { get; set; }
+
+        [JsonPropertyName("requiresPaymentAction")]
+        public bool RequiresPaymentAction { get; set; }
+
+        [JsonPropertyName("paymentOptions")]
+        public List<CheckOutPaymentOptionDto>? PaymentOptions { get; set; }
+    }
+
+    public class ConfirmCheckOutPaymentRequest
+    {
+        [Required]
+        [JsonPropertyName("paymentMethod")]
+        public string PaymentMethod { get; set; } = string.Empty;
+    }
+
+    public class CheckOutPaymentOptionDto
+    {
+        [JsonPropertyName("method")]
+        public string Method { get; set; } = string.Empty;
+
+        [JsonPropertyName("label")]
+        public string Label { get; set; } = string.Empty;
+
+        [JsonPropertyName("note")]
+        public string? Note { get; set; }
+
+        [JsonPropertyName("momo")]
+        public MomoCreatePaymentResultDto? Momo { get; set; }
     }
 }
